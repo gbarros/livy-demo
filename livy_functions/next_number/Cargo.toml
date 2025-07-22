@@ -1,0 +1,8 @@
+[package]
+name = "next_number"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "livy-service"
+path = "src/main.rs" 

@@ -1,0 +1,37 @@
+{
+  "name": "livy-demo",
+  "version": "1.0.0",
+  "description": "A four-tab demo site showcasing Livy's JS SDK",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:https": "node server.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@livylabs/sdk": "^0.0.2",
+    "dotenv": "^17.2.0",
+    "next": "^15.1.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.7.2"
+  },
+  "keywords": [
+    "livy",
+    "sdk",
+    "demo",
+    "next.js"
+  ],
+  "author": "",
+  "license": "ISC"
+}
