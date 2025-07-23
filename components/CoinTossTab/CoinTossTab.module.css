@@ -1,0 +1,164 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header section */
+.header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: #6b7280;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+/* Coin section */
+.coinSection {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.coin {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: 4px solid #f59e0b;
+  background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #92400e;
+  position: relative;
+}
+
+.coinFlipping {
+  animation: coinFlip 1s linear infinite;
+}
+
+@keyframes coinFlip {
+  0% { transform: rotateY(0deg); }
+  50% { transform: rotateY(90deg) scale(1.1); }
+  100% { transform: rotateY(180deg); }
+}
+
+.coinImage {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+}
+
+.coinPreview {
+  opacity: 0.9;
+}
+
+.coinFallback {
+  font-size: 1.5rem;
+}
+
+.coinSpinner {
+  font-size: 1.5rem;
+  animation: spin 1s linear infinite;
+}
+
+.loadingIndicator {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Form section */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.choiceSection {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.choiceLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.choiceInput {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+}
+
+.choiceText {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.buttonSection {
+  display: flex;
+  justify-content: center;
+}
+
+/* Button styles */
+.button {
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.buttonEnabled {
+  background-color: #16a34a;
+  color: white;
+}
+
+.buttonEnabled:hover {
+  background-color: #15803d;
+}
+
+.buttonEnabled:active {
+  background-color: #166534;
+}
+
+.buttonDisabled {
+  background-color: #9ca3af;
+  color: white;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+} 

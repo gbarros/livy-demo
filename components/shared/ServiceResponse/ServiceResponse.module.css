@@ -1,0 +1,251 @@
+.container {
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+/* Loading state */
+.loadingState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+}
+
+/* User message */
+.userMessage {
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.success {
+  background-color: #d1fae5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.error {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+/* Proof status */
+.proofSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.proofLabel {
+  font-weight: 600;
+  color: #374151;
+}
+
+.proofBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.valid {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.invalid {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 1rem;
+}
+
+.toggleButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.toggleButton:hover {
+  background-color: #2563eb;
+}
+
+/* Code blocks */
+.codeBlock {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+  margin-top: 0.75rem;
+}
+
+.sectionTitle {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.code {
+  background-color: #f3f4f6;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  white-space: pre;
+  color: #374151;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+/* Service-specific displays */
+.priceDisplay {
+  margin-bottom: 1rem;
+}
+
+.priceCard {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #f59e0b;
+  text-align: center;
+}
+
+.priceIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.priceValue {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #374151;
+  margin: 0.5rem 0;
+}
+
+.priceSymbol {
+  color: #6b7280;
+  margin: 0.25rem 0;
+}
+
+.priceTimestamp {
+  font-size: 0.75rem;
+  color: #059669;
+  margin-top: 0.5rem;
+}
+
+/* Game result */
+.gameResult {
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.gameWin {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.gameLose {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.gameTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.gameWin .gameTitle {
+  color: #065f46;
+}
+
+.gameLose .gameTitle {
+  color: #991b1b;
+}
+
+.gameDetails {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.gameWin .gameDetails {
+  color: #047857;
+}
+
+.gameLose .gameDetails {
+  color: #dc2626;
+}
+
+/* Validation result */
+.validationResult {
+  background-color: #dbeafe;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid #93c5fd;
+  margin-bottom: 1rem;
+}
+
+.validationDetails {
+  color: #1e40af;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Metadata */
+.metadata {
+  font-size: 0.75rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.metadata p {
+  margin: 0.25rem 0;
+} 
