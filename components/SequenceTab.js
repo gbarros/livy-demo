@@ -1,59 +1,109 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { runService } from '../lib/livy';
 
 export default function SequenceTab() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [userAnswer, setUserAnswer] = useState('');
 
-  // Auto-trigger the service call on component mount
-  useEffect(() => {
-    const fetchSequence = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // Call the Livy TEE service - validates that input number is exactly 5
-        const response = await runService({
-          serviceId: 'a33e2665-1458-4721-840c-f0b3a7a0569b',
-          params: {
-            number: '5'  // TEE function certifies this input is 5 or fails
-          }
-        });
-        
-        setResult(response);
-      } catch (err) {
-        if (err.code) {
-          // Handle Livy SDK errors with error codes (proxied through API)
-          setError(`SDK Error (${err.code}): ${err.message}`);
-        } else {
-          setError(`Number validation failed: ${err.message}`);
+  // Manual trigger for the service call via button click
+  const handleValidateNumber = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    
+    try {
+      // Call the Livy TEE service - validates that input number is exactly 5
+      const response = await runService({
+        serviceId: 'a33e2665-1458-4721-840c-f0b3a7a0569b',
+        params: {
+          number: userAnswer  // TEE function certifies this input is 5 or fails
         }
-      } finally {
-        setLoading(false);
+      });
+      
+      setResult(response);
+    } catch (err) {
+      if (err.code) {
+        // Handle Livy SDK errors with error codes (proxied through API)
+        let errorMessage = err.message;
+        
+        // Try to extract the meaningful error from the TEE service
+        try {
+          const errorData = JSON.parse(err.message);
+          if (errorData.output && errorData.output.message) {
+            const fullMessage = errorData.output.message;
+            // Look for the assertion failure message
+            const assertionMatch = fullMessage.match(/You've got the wrong number! Expected (\d+), got (\d+)/);
+            if (assertionMatch) {
+              const expected = assertionMatch[1];
+              const received = assertionMatch[2];
+              errorMessage = `Wrong answer! 🤔 Expected ${expected}, but you entered ${received}. Try again!`;
+            }
+          }
+        } catch (parseErr) {
+          // If parsing fails, fall back to generic message
+          errorMessage = `Incorrect! The TEE expected 5 but got "${userAnswer}". Try again!`;
+        }
+        
+        setError(errorMessage);
+      } else {
+        setError(`Incorrect! The TEE expected 5 but got "${userAnswer}". Try again!`);
       }
-    };
-
-    fetchSequence();
-  }, []);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
       <div className="border-b pb-4">
-        <h2 className="text-2xl font-bold text-gray-900">Number Validation Service</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Sequence Challenge 🧠</h2>
         <p className="text-gray-600 mt-2">
-          This tab validates that the input number is exactly 5. The TEE function certifies 
-          the input parameter and succeeds only when the number equals 5. Auto-runs on component mount.
+          Do you know the right answer? What is the next number in the sequence: <span className="font-mono font-bold text-blue-600">1, 2, 3, 4, ...</span>
         </p>
+        <p className="text-sm text-gray-500 mt-1">
+          The TEE function will verify if you got it right!
+        </p>
+      </div>
+
+      <div className="flex justify-center">
+        <div className="flex items-center space-x-4">
+          <input
+            type="text"
+            value={userAnswer}
+            onChange={(e) => setUserAnswer(e.target.value)}
+            placeholder="5"
+            disabled={loading}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-lg font-medium min-w-[100px]"
+          />
+          <button
+            onClick={handleValidateNumber}
+            disabled={loading || !userAnswer.trim()}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+              loading || !userAnswer.trim()
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800'
+            } text-white`}
+          >
+            {loading ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Checking...
+              </div>
+            ) : (
+              'Send Answer'
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-4">Service Response</h3>
         
-        {loading && (
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-            <span className="ml-2 text-gray-600">Validating number in TEE...</span>
+        {!result && !error && !loading && (
+          <div className="text-center py-8 text-gray-500">
+            Enter your answer and click "Send Answer" to see if you're correct!
           </div>
         )}
 
@@ -65,6 +115,10 @@ export default function SequenceTab() {
 
         {result && (
           <div className="space-y-4">
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+              <strong>🎉 Correct!</strong> You got it right! The answer is indeed {userAnswer}.
+            </div>
+            
             <div className="bg-white p-4 rounded border">
               <h4 className="font-semibold text-gray-700 mb-2">Output:</h4>
               <pre className="bg-gray-100 p-3 rounded text-sm overflow-x-auto">
@@ -88,9 +142,9 @@ export default function SequenceTab() {
 
       <div className="text-sm text-gray-500">
         <p><strong>Service ID:</strong> a33e2665-1458-4721-840c-f0b3a7a0569b</p>
-        <p><strong>Input Parameter:</strong> number=5</p>
-        <p><strong>Trigger:</strong> Automatic on component mount (useEffect)</p>
-        <p><strong>TEE Function:</strong> Validates input number is exactly 5</p>
+        <p><strong>Input Parameter:</strong> number={userAnswer || '{your answer}'}</p>
+        <p><strong>Trigger:</strong> Manual button click</p>
+        <p><strong>TEE Function:</strong> Validates if your answer equals 5</p>
       </div>
     </div>
   );

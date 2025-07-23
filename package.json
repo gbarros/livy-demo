@@ -1,7 +1,7 @@
 {
   "name": "livy-demo",
   "version": "1.0.0",
-  "description": "A four-tab demo site showcasing Livy's JS SDK",
+  "description": "A four-tab demo site showcasing Livy's JS SDK (presented by Celestia Labs)",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,7 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@livylabs/sdk": "^0.0.2",
+    "@livylabs/sdk": "^0.0.3",
     "dotenv": "^17.2.0",
     "next": "^15.1.3",
     "react": "^19.0.0",
@@ -30,7 +30,9 @@
     "livy",
     "sdk",
     "demo",
-    "next.js"
+    "next.js",
+    "celestia",
+    "celestia-labs"
   ],
   "author": "",
   "license": "ISC"

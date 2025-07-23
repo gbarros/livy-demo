@@ -21,7 +21,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <Head>
         <title>Livy Demo Site</title>
-        <meta name="description" content="A four-tab demo showcasing Livy's JS SDK" />
+        <meta name="description" content="A four-tab demo showcasing Livy's JS SDK (presented by Celestia Labs)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -75,6 +75,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <p className="text-gray-400">
+              Presented by <span className="text-blue-400">Celestia Labs</span> | 
               Powered by <span className="text-blue-400">Livy SDK</span> | 
               Built with <span className="text-blue-400">Next.js</span> & <span className="text-blue-400">Tailwind CSS</span>
             </p>

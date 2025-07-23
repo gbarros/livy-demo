@@ -38,7 +38,7 @@
 ## Tab Requirements
 | Tab         | Service ID       | Trigger                         | Description                                                   |
 |-------------|------------------|----------------------------------|---------------------------------------------------------------|
-| Sequence    | SEQ_SERVICE_ID   | `useEffect` (on mount)          | Displays "Next number" result and proof status.              |
+| Sequence    | SEQ_SERVICE_ID   | Button "Validate Number 5"     | Displays "Next number" result and proof status.              |
 | Time‑Aware  | TIME_SERVICE_ID  | Button "Get minutes to next hour" | Shows computed minutes and proof.                           |
 | Coin Toss   | COIN_SERVICE_ID  | Form (Heads/Tails)              | Starts coin‑flip animation, then shows win/lose + proof.     |
 | Price Feed  | PRICE_SERVICE_ID | Button "Fetch BTC→USD"          | Displays current rate and proof JSON.                        |

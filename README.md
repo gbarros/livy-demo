@@ -1,6 +1,6 @@
 # Livy Demo Site
 
-A four-tab demo site showcasing Livy's JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS. Each tab demonstrates different use cases for Livy's cryptographic proof verification system.
+A four-tab demo site showcasing Livy's JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS, presented by Celestia Labs. Each tab demonstrates different use cases for Livy's cryptographic proof verification system.
 
 ## 🚀 Features
 
@@ -277,4 +277,4 @@ This project is licensed under the ISC License - see the package.json file for d
 
 ---
 
-**Built with ❤️ using Livy SDK, Next.js, and Tailwind CSS** 
+**Presented by Celestia Labs | Built with ❤️ using Livy SDK, Next.js, and Tailwind CSS** 

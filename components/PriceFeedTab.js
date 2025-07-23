@@ -5,9 +5,10 @@ export default function PriceFeedTab() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [userSymbol, setUserSymbol] = useState('');
 
-  // Handle button click to fetch BTC price
-  const handleFetchPrice = async (symbol = 'BTC-USD') => {
+  // Handle form submission to fetch price
+  const handleFetchPrice = async () => {
     setLoading(true);
     setError(null);
     setResult(null);
@@ -16,7 +17,7 @@ export default function PriceFeedTab() {
       // Call the Livy TEE service - fetches and certifies crypto prices from Coinbase API
       const response = await runService({
         serviceId: 'd1ea89d7-140e-4c66-9ce9-0c44701a506a',
-        params: symbol !== 'BTC-USD' ? { symbol: symbol } : {} // Default to BTC-USD
+        params: userSymbol.trim() ? { symbol: userSymbol.trim() } : {} // Use user input or default to BTC-USD
       });
       
       // Parse the JSON response from the TEE service
@@ -30,7 +31,8 @@ export default function PriceFeedTab() {
       }
       
       setResult({
-        ...response,
+        output: response.output,
+        proofValid: response.proofValid,
         parsedOutput
       });
     } catch (err) {
@@ -60,10 +62,13 @@ export default function PriceFeedTab() {
   return (
     <div className="space-y-6">
       <div className="border-b pb-4">
-        <h2 className="text-2xl font-bold text-gray-900">Bitcoin Price Feed</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Crypto Price Feed 💰</h2>
         <p className="text-gray-600 mt-2">
-          This tab fetches and certifies live cryptocurrency prices from the Coinbase API. 
+          Enter a trading pair (like BTC-USD, ETH-USD, etc.) to fetch and certify live cryptocurrency prices from the Coinbase API. 
           The TEE function validates data authenticity with cryptographic proof and timestamps.
+        </p>
+        <p className="text-sm text-gray-500 mt-1">
+          Leave empty for default BTC-USD or try other pairs like ETH-USD, ADA-USD, SOL-USD.
         </p>
       </div>
 
@@ -88,7 +93,15 @@ export default function PriceFeedTab() {
         </div>
       )}
 
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center space-x-4">
+        <input
+          type="text"
+          value={userSymbol}
+          onChange={(e) => setUserSymbol(e.target.value)}
+          placeholder="BTC-USD"
+          disabled={loading}
+          className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-center text-lg font-medium min-w-[120px]"
+        />
         <button
           onClick={handleFetchPrice}
           disabled={loading}
@@ -101,10 +114,10 @@ export default function PriceFeedTab() {
           {loading ? (
             <div className="flex items-center">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              Fetching Price...
+              Fetching...
             </div>
           ) : (
-            'Fetch BTC→USD Rate'
+            'Fetch Price'
           )}
         </button>
       </div>
@@ -114,7 +127,7 @@ export default function PriceFeedTab() {
         
         {!result && !error && !loading && (
           <div className="text-center py-8 text-gray-500">
-            Click the button above to fetch the current Bitcoin price
+            Enter a trading pair and click "Fetch Price" to get current cryptocurrency prices
           </div>
         )}
 
@@ -129,8 +142,27 @@ export default function PriceFeedTab() {
             <div className="bg-white p-4 rounded border">
               <h4 className="font-semibold text-gray-700 mb-2">Raw JSON Output:</h4>
               <pre className="bg-gray-100 p-3 rounded text-sm overflow-x-auto">
-                {JSON.stringify(result.output, null, 2)}
+                {(() => {
+                  // Create a clean version for display
+                  if (result.output && typeof result.output === 'object' && result.output.output && typeof result.output.output === 'string') {
+                    const displayOutput = JSON.parse(JSON.stringify(result.output));
+                    // Replace the long output with a reference
+                    displayOutput.output = "[See formatted output below]";
+                    return JSON.stringify(displayOutput, null, 2);
+                  }
+                  return JSON.stringify(result.output, null, 2);
+                })()}
               </pre>
+              
+              {/* Display formatted output separately */}
+              {result.output && typeof result.output === 'object' && result.output.output && typeof result.output.output === 'string' && (
+                <div className="mt-4 border-t pt-4">
+                  <h5 className="font-semibold text-gray-700 mb-2">Formatted Output:</h5>
+                  <pre className="bg-gray-50 p-3 rounded text-sm whitespace-pre-wrap font-mono">
+                    {result.output.output.replace(/\\n/g, '\n')}
+                  </pre>
+                </div>
+              )}
             </div>
             
             <div className="flex items-center space-x-2">
@@ -159,8 +191,8 @@ export default function PriceFeedTab() {
 
       <div className="text-sm text-gray-500">
         <p><strong>Service ID:</strong> d1ea89d7-140e-4c66-9ce9-0c44701a506a</p>
-        <p><strong>Input Parameter:</strong> symbol=BTC-USD (default)</p>
-        <p><strong>Trigger:</strong> Manual button click</p>
+        <p><strong>Input Parameter:</strong> symbol={userSymbol || 'BTC-USD (default)'}</p>
+        <p><strong>Trigger:</strong> Input field + manual button click</p>
         <p><strong>TEE Function:</strong> Fetches & certifies crypto prices from Coinbase API</p>
         <p><strong>Data Source:</strong> https://api.coinbase.com/v2/prices/</p>
       </div>
