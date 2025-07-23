@@ -1,6 +1,6 @@
 # Livy Demo Site
 
-A four-tab demo site showcasing Livy's JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS, presented by Celestia Labs. Each tab demonstrates different use cases for Livy's cryptographic proof verification system.
+A four-tab demo site showcasing [Livy's](https://x.com/livylabs) JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS, presented by [Celestia Labs](https://celestia.org/). Each tab demonstrates different use cases for [Livy's](https://x.com/livylabs) cryptographic proof verification system.
 
 ## 🚀 Features
 
@@ -15,7 +15,7 @@ Each service call includes cryptographic proof verification to ensure data authe
 
 - Node.js 16.x or higher
 - npm or yarn package manager
-- Livy API key and service IDs (see setup instructions below)
+- [Livy](https://x.com/livylabs) API key and service IDs (see setup instructions below)
 
 ## 🛠️ Installation
 
@@ -31,7 +31,7 @@ Each service call includes cryptographic proof verification to ensure data authe
    cp env.example .env.local
    ```
 
-3. **Edit `.env.local` with your Livy credentials:**
+3. **Edit `.env.local` with your [Livy](https://x.com/livylabs) credentials:**
    ```env
    # Livy SDK Configuration
    LIVY_API_KEY=your-api-key-here
@@ -58,15 +58,15 @@ Each service call includes cryptographic proof verification to ensure data authe
    ```
    Then open [http://localhost:3000](http://localhost:3000)
 
-   > **Note**: Use HTTPS mode to avoid CORS issues with the Livy API. The browser may show a security warning for the self-signed certificate - click "Advanced" and "Proceed to localhost" to continue.
+   > **Note**: Use HTTPS mode to avoid CORS issues with the [Livy](https://x.com/livylabs) API. The browser may show a security warning for the self-signed certificate - click "Advanced" and "Proceed to localhost" to continue.
 
 ## 🔧 Required Environment Variables
 
 | Variable | Description | Required | Usage |
 |----------|-------------|----------|-------|
-| `LIVY_API_KEY` | Your Livy API authentication key | ✅ Yes | Server-side only (secure) |
+| `LIVY_API_KEY` | Your [Livy](https://x.com/livylabs) API authentication key | ✅ Yes | Server-side only (secure) |
 | `NEXT_PUBLIC_LIVY_API_KEY` | API key for client display | ✅ Yes | Client-side (display only) |
-| `LIVY_BASE_URL` | Livy API base URL | ✅ Yes | Server-side |
+| `LIVY_BASE_URL` | [Livy](https://x.com/livylabs) API base URL | ✅ Yes | Server-side |
 | `SEQ_SERVICE_ID` | Service ID for sequence generation | ✅ Yes | Reference only |
 | `TIME_SERVICE_ID` | Service ID for time calculations | ✅ Yes | Reference only |
 | `COIN_SERVICE_ID` | Service ID for coin toss game | ✅ Yes | Reference only |
@@ -74,14 +74,14 @@ Each service call includes cryptographic proof verification to ensure data authe
 
 > **Security Note**: The actual API calls are made server-side using `LIVY_API_KEY` to avoid CORS issues and keep the API key secure. The `NEXT_PUBLIC_` version is only used for display purposes in the UI.
 
-## 🔑 Obtaining Livy Service IDs
+## 🔑 Obtaining [Livy](https://x.com/livylabs) Service IDs
 
-1. **Sign up for Livy:**
+1. **Sign up for [Livy](https://x.com/livylabs):**
    - Visit [Livy Labs Console](https://console.livylabs.xyz)
    - Create an account and get your API key
 
 2. **Create Services:**
-   You need to create **four separate services** in the Livy console:
+   You need to create **four separate services** in the [Livy](https://x.com/livylabs) console:
    
    - **Sequence Service**: A service that generates sequential numbers
    - **Time Service**: A service that calculates time-based values
@@ -102,7 +102,7 @@ livy-demo/
 │   ├── CoinTossTab.js   # Interactive coin toss game
 │   └── PriceFeedTab.js  # Bitcoin price fetcher
 ├── lib/
-│   └── livy.js          # Livy SDK client wrapper
+│   └── livy.js          # [Livy](https://x.com/livylabs) SDK client wrapper
 ├── pages/
 │   ├── _app.js          # Next.js app component
 │   └── index.js         # Main page with tab navigation
@@ -138,7 +138,7 @@ livy-demo/
 
 ## 🔍 Proof Verification
 
-Each tab demonstrates Livy's cryptographic proof system:
+Each tab demonstrates [Livy's](https://x.com/livylabs) cryptographic proof system:
 
 - **Green ✓ Valid**: The computation/data has been cryptographically verified
 - **Red ✗ Invalid**: The proof verification failed
@@ -177,7 +177,7 @@ The HTTPS development server uses self-signed certificates for local development
 **To proceed:**
 1. Click "Advanced" or "Show Details"
 2. Click "Proceed to localhost (unsafe)" or "Accept Risk and Continue"
-3. The site will load and CORS issues with the Livy API will be resolved
+3. The site will load and CORS issues with the [Livy](https://x.com/livylabs) API will be resolved
 
 The certificates are automatically generated and stored in the `certs/` directory.
 
@@ -221,7 +221,7 @@ try {
 
 ## 🔍 Verification Process
 
-1. **Service Execution**: Livy runs your service in a secure enclave
+1. **Service Execution**: [Livy](https://x.com/livylabs) runs your service in a secure enclave
 2. **Attestation Generation**: Creates cryptographic proof of execution
 3. **Result Return**: Service output + attestation returned to client
 4. **Verification**: Client verifies the attestation using `verifyAttestation()`
@@ -238,7 +238,7 @@ try {
 ### CORS Issues
 - **Fixed**: Use `npm run dev:https` for HTTPS development
 - API calls are proxied through Next.js API routes (`/api/livy`)
-- No direct browser calls to Livy API (bypasses CORS)
+- No direct browser calls to [Livy](https://x.com/livylabs) API (bypasses CORS)
 
 ### Authentication Errors
 - `INVALID_API_KEY`: Check your `LIVY_API_KEY` in `.env.local`
@@ -258,7 +258,8 @@ try {
 
 ## 📚 Learn More
 
-- [Livy Labs Documentation](https://docs.livylabs.xyz)
+- [Livy Labs](https://x.com/livylabs) - [Documentation](https://docs.livylabs.xyz)
+- [Celestia](https://celestia.org/) - Modular blockchain network
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
 - [Livy SDK Repository](https://github.com/livylabs/sdk)
@@ -277,4 +278,4 @@ This project is licensed under the ISC License - see the package.json file for d
 
 ---
 
-**Presented by Celestia Labs | Built with ❤️ using Livy SDK, Next.js, and Tailwind CSS** 
+**Presented by [Celestia Labs](https://celestia.org/) | Built with ❤️ using [Livy SDK](https://x.com/livylabs), Next.js, and Tailwind CSS** 
