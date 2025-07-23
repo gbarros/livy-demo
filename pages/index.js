@@ -18,7 +18,7 @@ export default function Home() {
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Head>
         <title>Livy Demo Site</title>
         <meta name="description" content="A four-tab demo showcasing Livy's JS SDK (presented by Celestia Labs)" />
@@ -62,7 +62,7 @@ export default function Home() {
       </nav>
 
       {/* Tab Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-lg shadow">
           <div className="p-6">
             {ActiveComponent && <ActiveComponent />}
@@ -75,8 +75,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <p className="text-gray-400">
-              Presented by <span className="text-blue-400">Celestia Labs</span> | 
-              Powered by <span className="text-blue-400">Livy SDK</span> | 
+              Presented by <a href="https://celestia.org/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Celestia Labs</a> | 
+              Powered by <a href="https://x.com/livylabs" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Livy SDK</a> | 
               Built with <span className="text-blue-400">Next.js</span> & <span className="text-blue-400">Tailwind CSS</span>
             </p>
           </div>
