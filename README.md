@@ -1,13 +1,13 @@
 # Livy Demo Site
 
-A four-tab demo site showcasing [Livy's](https://x.com/livylabs) JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS, presented by [Celestia Labs](https://celestia.org/). Each tab demonstrates different use cases for [Livy's](https://x.com/livylabs) cryptographic proof verification system.
+A four-tab demo site showcasing [Livy's](https://x.com/livylabs) JavaScript SDK (`@livylabs/sdk`) with Next.js and Tailwind CSS, presented by [Celestia Labs](https://celestia.org/). Built with a clean controller/view architecture, this demo demonstrates different use cases for [Livy's](https://x.com/livylabs) cryptographic proof verification system with standardized response parsing and presentation-ready code organization.
 
 ## 🚀 Features
 
 - **Sequence Generator**: Auto-triggers on page load to generate the next number in a sequence
 - **Time-Aware Service**: Calculates minutes remaining until the next hour 
 - **Coin Toss Game**: Interactive coin flip with win/lose logic and animations
-- **Bitcoin Price Feed**: Fetches real-time BTC→USD exchange rates
+- **Crypto Price Feed**: Fetches real-time cryptocurrency prices from Coinbase API
 
 Each service call includes cryptographic proof verification to ensure data authenticity and integrity.
 
@@ -96,53 +96,110 @@ Each service call includes cryptographic proof verification to ensure data authe
 
 ```
 livy-demo/
-├── components/           # React components for each tab
-│   ├── SequenceTab.js   # Auto-triggering sequence generator
-│   ├── TimeAwareTab.js  # Time calculation service
-│   ├── CoinTossTab.js   # Interactive coin toss game
-│   └── PriceFeedTab.js  # Bitcoin price fetcher
-├── lib/
-│   └── livy.js          # [Livy](https://x.com/livylabs) SDK client wrapper
+├── components/                    # React components organized by feature
+│   ├── SequenceTab/
+│   │   ├── index.js              # Main component (thin connector)
+│   │   ├── SequenceController.js # Business logic & TEE integration
+│   │   ├── SequenceView.js       # Pure UI templating
+│   │   └── SequenceTab.module.css # Component-specific styles
+│   ├── TimeAwareTab/
+│   │   ├── index.js              
+│   │   ├── TimeAwareController.js
+│   │   ├── TimeAwareView.js      
+│   │   └── TimeAwareTab.module.css
+│   ├── CoinTossTab/
+│   │   ├── index.js              
+│   │   ├── CoinTossController.js 
+│   │   ├── CoinTossView.js       
+│   │   └── CoinTossTab.module.css
+│   ├── PriceFeedTab/
+│   │   ├── index.js              
+│   │   ├── PriceFeedController.js
+│   │   ├── PriceFeedView.js      
+│   │   └── PriceFeedTab.module.css
+│   └── shared/
+│       └── ServiceResponse/       # Reusable response display component
+│           ├── ServiceResponse.js
+│           ├── ServiceResponse.module.css
+│           └── index.js
+├── lib/                          # Core utilities & SDK integrations
+│   ├── livy.js                   # [Livy](https://x.com/livylabs) SDK client wrapper
+│   ├── responseParser.js         # Standardized response parsing
+│   └── messageExtractor.js       # Service-specific message extraction
 ├── pages/
-│   ├── _app.js          # Next.js app component
-│   └── index.js         # Main page with tab navigation
+│   ├── api/
+│   │   └── livy.js              # Next.js API route (CORS proxy)
+│   ├── _app.js                  # Next.js app component
+│   └── index.js                 # Main page with tab navigation
 ├── styles/
-│   └── globals.css      # Global styles and animations
-├── plan.md              # Project development plan
-├── env.example          # Environment variables template
-└── README.md            # This file
+│   └── globals.css              # Global styles and animations
+├── plan.md                      # Project development plan
+├── env.example                  # Environment variables template
+└── README.md                    # This file
 ```
+
+## 🏗️ Architecture Overview
+
+### Controller/View Pattern
+Each tab follows a clean separation of concerns:
+
+- **`Controller.js`** - Pure business logic and [Livy](https://x.com/livylabs) TEE integration (~45-65 lines)
+- **`View.js`** - Pure UI templating and rendering (~50-110 lines)  
+- **`index.js`** - Thin connector component (~8 lines)
+
+### Standardized Response Handling
+- **`lib/responseParser.js`** - Universal parser for all [Livy](https://x.com/livylabs) service responses
+- **`lib/messageExtractor.js`** - Service-specific message extraction patterns
+- **`shared/ServiceResponse/`** - Reusable response display component
+
+### Benefits for Presentations
+- **Focus on Controllers** - All TEE integration logic in focused files
+- **Skip View complexity** - Just mention "ServiceResponse handles rendering"
+- **Ignore connectors** - They're just plumbing
 
 ## 🎯 Tab Functionality
 
 ### 1. Sequence Tab
-- **Trigger**: Automatic on component mount (`useEffect`)
-- **Function**: Generates the next number in a sequence
+- **Trigger**: Manual button click with user input
+- **Function**: Validates if user's answer equals 5
+- **Controller**: Input validation and [Livy](https://x.com/livylabs) service integration
 - **Proof**: Verifies the computation was performed correctly
 
 ### 2. Time-Aware Tab  
-- **Trigger**: Manual button click
-- **Function**: Calculates minutes remaining until next hour
+- **Trigger**: Manual button click with time calculation
+- **Function**: Validates user's UTC time calculation
+- **Controller**: Real-time clock and [Livy](https://x.com/livylabs) service integration
 - **Proof**: Verifies the time calculation is accurate
 
 ### 3. Coin Toss Tab
 - **Trigger**: Form submission (Heads/Tails choice)
 - **Function**: Performs random coin flip with user prediction
-- **Animation**: Spinning coin during request
+- **Controller**: Game logic and [Livy](https://x.com/livylabs) service integration
+- **Animation**: Spinning coin during request (in View)
 - **Proof**: Verifies the randomness is truly random
 
 ### 4. Price Feed Tab
-- **Trigger**: Manual button click  
-- **Function**: Fetches current Bitcoin to USD exchange rate
+- **Trigger**: Manual button click with optional symbol input
+- **Function**: Fetches cryptocurrency prices from Coinbase API
+- **Controller**: Price data handling and [Livy](https://x.com/livylabs) service integration
 - **Proof**: Verifies the price data hasn't been tampered with
 
-## 🔍 Proof Verification
+## 🔍 Proof Verification & Response Handling
 
-Each tab demonstrates [Livy's](https://x.com/livylabs) cryptographic proof system:
+Each tab demonstrates [Livy's](https://x.com/livylabs) cryptographic proof system through the standardized `ServiceResponse` component:
 
-- **Green ✓ Valid**: The computation/data has been cryptographically verified
-- **Red ✗ Invalid**: The proof verification failed
-- **Raw JSON**: Shows the complete service response including proof data
+### Response Display Features
+- **User-friendly messages** - Clean, formatted success/error messages
+- **Proof status badges** - Green ✓ Valid / Red ✗ Invalid indicators  
+- **Service-specific displays** - Price cards, game results, validation details
+- **Raw output toggle** - View complete JSON response data
+- **Function console output** - Show/hide TEE function execution logs
+
+### Standardized Parsing
+- **Universal parser** - Handles all [Livy](https://x.com/livylabs) service response formats
+- **Error extraction** - Intelligently parses TEE function error messages
+- **Technical log cleaning** - Filters out binary paths and execution details
+- **Service-specific extraction** - Custom parsing for each tab's data format
 
 ## 🎨 Animations
 
@@ -183,40 +240,78 @@ The certificates are automatically generated and stored in the `certs/` director
 
 ## 🔧 SDK Usage Examples
 
-### Basic Service Call
+### Controller Pattern
 ```javascript
-import { runService } from '../lib/livy';
+// SequenceController.js - Business logic only
+import { runService } from '../../lib/livy';
+import { parseServiceResponse } from '../../lib/responseParser';
 
-const result = await runService({
-  serviceId: 'your-service-id-here'
-});
-
-console.log('Output:', result.output);
-console.log('Proof Valid:', result.proofValid);
-```
-
-### Service Call with Input Parameters
-```javascript
-const result = await runService({
-  serviceId: 'your-service-id-here',
-  input: { userChoice: 'heads' }
-});
-```
-
-### Error Handling
-```javascript
-import { SDKError } from '@livylabs/sdk';
-
-try {
-  const result = await runService({ serviceId: 'invalid-id' });
-} catch (err) {
-  if (err instanceof SDKError) {
-    console.log('SDK Error Code:', err.code);
-    console.log('SDK Error Message:', err.message);
-  } else {
-    console.log('General Error:', err.message);
-  }
+export function useSequenceController() {
+  const [loading, setLoading] = useState(false);
+  const [parsedResponse, setParsedResponse] = useState(null);
+  
+  const handleSubmit = async () => {
+    setLoading(true);
+    
+    try {
+      // TEE Service Call - Core integration logic
+      const response = await runService({
+        serviceId: 'a33e2665-1458-4721-840c-f0b3a7a0569b',
+        params: { number: userAnswer }
+      });
+      
+      // Use standardized parser
+      const parsed = parseServiceResponse(response, null, 'sequence');
+      setParsedResponse(parsed);
+      
+    } catch (error) {
+      const parsed = parseServiceResponse(null, error, 'sequence');
+      setParsedResponse(parsed);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return { loading, parsedResponse, handleSubmit, /* ... */ };
 }
+```
+
+### View Pattern
+```javascript
+// SequenceView.js - Pure templating
+import ServiceResponse from '../shared/ServiceResponse';
+
+export default function SequenceView({ 
+  loading, parsedResponse, handleSubmit, serviceId, inputParams 
+}) {
+  return (
+    <div>
+      {/* UI elements */}
+      <button onClick={handleSubmit}>Send Answer</button>
+      
+      {/* Standardized response display */}
+      <ServiceResponse 
+        parsedResponse={parsedResponse}
+        loading={loading}
+        serviceId={serviceId}
+        inputParams={inputParams}
+      />
+    </div>
+  );
+}
+```
+
+### Standardized Response Parsing
+```javascript
+import { parseServiceResponse } from '../lib/responseParser';
+
+// Handles both success and error cases consistently
+const parsed = parseServiceResponse(response, error, 'coin-toss');
+
+console.log('Success:', parsed.success);
+console.log('User Message:', parsed.userMessage);
+console.log('Extracted Data:', parsed.extractedData);
+console.log('Technical Details:', parsed.technicalDetails);
 ```
 
 ## 🔍 Verification Process
