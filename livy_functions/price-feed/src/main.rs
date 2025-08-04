@@ -1,6 +1,6 @@
 use reqwest;
 use serde::{Deserialize, Serialize};
-use std::env;
+use clap::Parser;
 
 #[derive(Deserialize, Debug)]
 struct CoinbaseData {
@@ -24,20 +24,21 @@ struct PriceFeedResult {
     certified: bool,
 }
 
+#[derive(Parser)]
+#[command(name = "price-feed")]
+#[command(about = "BTC Price Feed Certification Function")]
+struct Args {
+    /// Trading symbol to fetch price for (default: BTC-USD)
+    #[arg(long, default_value = "BTC-USD")]
+    symbol: String,
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("BTC Price Feed Certification Function");
 
-    // Check for optional symbol parameter (default to BTC-USD)
-    let args: Vec<String> = env::args().collect();
-    let mut symbol = "BTC-USD".to_string();
-
-    for arg in args.iter().skip(1) {
-        if arg.starts_with("--symbol=") {
-            symbol = arg.split('=').nth(1).unwrap_or("BTC-USD").to_uppercase();
-            break;
-        }
-    }
+    let args = Args::parse();
+    let symbol = args.symbol.to_uppercase();
 
     println!("Fetching price for symbol: {}", symbol);
 

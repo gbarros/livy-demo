@@ -1,32 +1,21 @@
-use std::env;
+use clap::Parser;
+
+#[derive(Parser)]
+#[command(name = "next_number")]
+#[command(about = "Number Certification Function")]
+struct Args {
+    /// The number to certify (must be 5)
+    #[arg(long)]
+    number: Option<i32>,
+}
 
 fn main() {
     println!("Number Certification Function");
 
-    // Collect command-line arguments
-    let args: Vec<String> = env::args().collect();
-
-    // Look for the --number parameter
-    let mut number_value: Option<i32> = None;
-
-    for arg in args.iter().skip(1) {
-        if arg.starts_with("--number=") {
-            let value_str = arg.split('=').nth(1).unwrap_or("");
-            match value_str.parse::<i32>() {
-                Ok(num) => {
-                    number_value = Some(num);
-                    break;
-                }
-                Err(_) => {
-                    eprintln!("Error: Invalid number format in --number parameter");
-                    std::process::exit(1);
-                }
-            }
-        }
-    }
+    let args = Args::parse();
 
     // Check if number parameter was provided
-    let number = match number_value {
+    let number = match args.number {
         Some(num) => num,
         None => {
             eprintln!("Error: --number parameter is required");
