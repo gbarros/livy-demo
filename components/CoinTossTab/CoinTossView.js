@@ -33,8 +33,8 @@ export default function CoinTossView({
           ) : gameResult ? (
             <>
               <img 
-                src={gameResult.coinResult === 'heads' ? '/celestia-heads.svg' : '/bitcoin-tails.svg'}
-                alt={gameResult.coinResult === 'heads' ? 'Celestia (Heads)' : 'Bitcoin (Tails)'}
+                src={gameResult.coinResult === 'head' ? '/celestia-heads.svg' : '/bitcoin-tails.svg'}
+                alt={gameResult.coinResult === 'head' ? 'Celestia (Heads)' : 'Bitcoin (Tails)'}
                 className={styles.coinImage}
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -42,14 +42,14 @@ export default function CoinTossView({
                 }}
               />
               <span className={styles.coinFallback} style={{display: 'none'}}>
-                {gameResult.coinResult === 'heads' ? '👑' : '₿'}
+                {gameResult.coinResult === 'head' ? '👑' : '₿'}
               </span>
             </>
           ) : (
             <>
               <img 
-                src={userChoice === 'heads' ? '/celestia-heads.svg' : '/bitcoin-tails.svg'}
-                alt={userChoice === 'heads' ? 'Celestia (Heads)' : 'Bitcoin (Tails)'}
+                src={userChoice === 'head' ? '/celestia-heads.svg' : '/bitcoin-tails.svg'}
+                alt={userChoice === 'head' ? 'Celestia (Heads)' : 'Bitcoin (Tails)'}
                 className={`${styles.coinImage} ${styles.coinPreview}`}
                 onError={(e) => {
                   e.target.style.display = 'none';
@@ -57,7 +57,7 @@ export default function CoinTossView({
                 }}
               />
               <span className={`${styles.coinFallback} ${styles.coinPreview}`} style={{display: 'none'}}>
-                {userChoice === 'heads' ? '👑' : '₿'}
+                {userChoice === 'head' ? '👑' : '₿'}
               </span>
             </>
           )}
@@ -71,8 +71,8 @@ export default function CoinTossView({
           <label className={styles.choiceLabel}>
             <input
               type="radio"
-              value="heads"
-              checked={userChoice === 'heads'}
+              value="head"
+              checked={userChoice === 'head'}
               onChange={(e) => handleChoiceChange(e.target.value)}
               disabled={loading}
               className={styles.choiceInput}
@@ -82,8 +82,8 @@ export default function CoinTossView({
           <label className={styles.choiceLabel}>
             <input
               type="radio"
-              value="tails"
-              checked={userChoice === 'tails'}
+              value="tail"
+              checked={userChoice === 'tail'}
               onChange={(e) => handleChoiceChange(e.target.value)}
               disabled={loading}
               className={styles.choiceInput}
