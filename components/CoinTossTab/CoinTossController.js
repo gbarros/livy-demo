@@ -9,7 +9,7 @@ import { parseServiceResponse } from '../../lib/responseParser';
 export function useCoinTossController() {
   const [loading, setLoading] = useState(false);
   const [parsedResponse, setParsedResponse] = useState(null);
-  const [userChoice, setUserChoice] = useState('heads');
+  const [userChoice, setUserChoice] = useState('head');
   const [gameResult, setGameResult] = useState(null);
 
   const handleChoiceChange = (choice) => {
@@ -27,7 +27,7 @@ export function useCoinTossController() {
     try {
       // TEE Service Call - Core integration logic
       const response = await runService({
-        serviceId: '05498066-9092-4fbb-bac2-31b58bb1e98e',
+        serviceId: process.env.COIN_SERVICE_ID,
         params: { choice: userChoice }
       });
       
@@ -76,7 +76,7 @@ export function useCoinTossController() {
     handleSubmit,
     
     // Service metadata
-    serviceId: '05498066-9092-4fbb-bac2-31b58bb1e98e',
+    serviceId: process.env.COIN_SERVICE_ID,
     inputParams: { choice: userChoice }
   };
 } 

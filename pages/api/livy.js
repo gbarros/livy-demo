@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     }
 
     // Get the correct API key for this service
-    const apiKey = USER_API_KEY;
+    const apiKey = process.env.USER_API_KEY;
     if (!apiKey) {
       return res.status(400).json({ 
         error: `No API key found for service ID: ${serviceId}` 
