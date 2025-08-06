@@ -1,4 +1,8 @@
 import { createClient, SDKError } from '@livylabs/sdk';
+import debug from 'debug';
+
+const log = debug('livy:api');
+const logError = debug('livy:api:error');
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -31,6 +35,21 @@ export default async function handler(req, res) {
       withAttestation
     });
 
+    const resultSummary = {
+      status: result.status,
+      output: result.output,
+      serviceId: result.serviceId,
+      params: result.params,
+      withAttestation: result.withAttestation,
+      postedToDataAvailability: result.postedToDataAvailability,
+      quote: result.quote ? {
+        quote: `${result.quote.quote.substring(0, 80)}...`,
+        rtmrs: result.quote.rtmrs.map(r => `${r.substring(0, 20)}...`),
+        eventLog: `eventLog exists... (length: ${result.quote.eventLog.length})`
+      } : null,
+    };
+    log('Livy Run Result:', JSON.stringify(resultSummary, null, 2));
+
     // Verify the attestation if enabled
     const proofValid = withAttestation ? await result.verifyAttestation() : true;
 
@@ -42,7 +61,7 @@ export default async function handler(req, res) {
     });
 
   } catch (err) {
-    console.error('Livy API Error:', err);
+    logError('Livy API Error:', err);
     
     // Handle SDK errors
     if (err instanceof SDKError) {
@@ -59,4 +78,4 @@ export default async function handler(req, res) {
       success: false
     });
   }
-} 
+}

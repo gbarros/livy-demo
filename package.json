@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "next dev",
     "dev:https": "node server.js",
+    "dev:https:debug": "DEBUG=livy:api* node server.js",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-certs": "mkdir -p certs && openssl req -x509 -newkey rsa:2048 -nodes -keyout certs/key.pem -out certs/cert.pem -days 365 -subj \"/C=US/ST=State/L=City/O=Organization/OU=OrgUnit/CN=localhost\""
   },
   "dependencies": {
     "@livylabs/sdk": "^0.0.5",
+    "debug": "^4.4.1",
     "dotenv": "^17.2.0",
     "next": "^15.1.3",
     "react": "^19.0.0",
