@@ -1,39 +1,34 @@
 use rand::Rng;
-use std::env;
+use clap::{Parser, ValueEnum};
+
+#[derive(ValueEnum, Clone, Debug, PartialEq)]
+enum Choice {
+    Head,
+    Tail, 
+}
+
+impl Choice {
+    fn normalize(&self) -> &'static str {
+        match self {
+            Choice::Head => "head",
+            Choice::Tail => "tail",
+        }
+    }
+}
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Your coin toss choice (head/tail)
+    #[arg(short, long)]
+    choice: Choice,
+}
 
 fn main() {
     println!("Coin Toss Certification Function");
 
-    // Collect command-line arguments
-    let args: Vec<String> = env::args().collect();
-
-    // Look for the --choice parameter
-    let mut user_choice: Option<String> = None;
-
-    for arg in args.iter().skip(1) {
-        if arg.starts_with("--choice=") {
-            let value_str = arg.split('=').nth(1).unwrap_or("").to_lowercase();
-            if value_str == "head" || value_str == "heads" || value_str == "tail" || value_str == "tails" {
-                // Normalize to singular form
-                let normalized = if value_str.starts_with("head") { "head" } else { "tail" };
-                user_choice = Some(normalized.to_string());
-                break;
-            } else {
-                eprintln!("Error: Invalid choice '{}'. Must be 'head' or 'tail'", value_str);
-                std::process::exit(1);
-            }
-        }
-    }
-
-    // Check if choice parameter was provided
-    let user_guess = match user_choice {
-        Some(choice) => choice,
-        None => {
-            eprintln!("Error: --choice parameter is required");
-            println!("Usage: --choice=head or --choice=tail");
-            std::process::exit(1);
-        }
-    };
+    let args = Args::parse();
+    let user_guess = args.choice.normalize();
 
     // Generate random number for server coin toss
     let mut rng = rand::thread_rng();

@@ -34,7 +34,7 @@ export function useTimeAwareController() {
     try {
       // TEE Service Call - Core integration logic
       const response = await runService({
-        serviceId: 'd0dfa8fc-1a96-47a1-a710-fe895c38f199',
+        serviceId: process.env.TIME_SERVICE_ID,
         params: { minutes: userAnswer }
       });
       
@@ -68,7 +68,7 @@ export function useTimeAwareController() {
     handleSubmit,
     
     // Service metadata
-    serviceId: 'd0dfa8fc-1a96-47a1-a710-fe895c38f199',
+    serviceId: process.env.TIME_SERVICE_ID,
     inputParams: { minutes: userAnswer || '{your answer}' }
   };
 } 

@@ -18,7 +18,7 @@ export function useSequenceController() {
     try {
       // TEE Service Call - Core integration logic
       const response = await runService({
-        serviceId: 'a33e2665-1458-4721-840c-f0b3a7a0569b',
+        serviceId: process.env.SEQ_SERVICE_ID,
         params: { number: userAnswer }
       });
       
@@ -48,7 +48,7 @@ export function useSequenceController() {
     handleSubmit,
     
     // Service metadata
-    serviceId: 'a33e2665-1458-4721-840c-f0b3a7a0569b',
+    serviceId: process.env.SEQ_SERVICE_ID,
     inputParams: { number: userAnswer || '{your answer}' }
   };
 } 

@@ -18,7 +18,7 @@ export function usePriceFeedController() {
     try {
       // TEE Service Call - Core integration logic
       const response = await runService({
-        serviceId: 'd1ea89d7-140e-4c66-9ce9-0c44701a506a',
+        serviceId: process.env.PRICE_SERVICE_ID,
         params: userSymbol.trim() ? { symbol: userSymbol.trim() } : {}
       });
       
@@ -48,7 +48,7 @@ export function usePriceFeedController() {
     handleSubmit,
     
     // Service metadata
-    serviceId: 'd1ea89d7-140e-4c66-9ce9-0c44701a506a',
+    serviceId: process.env.PRICE_SERVICE_ID,
     inputParams: { symbol: userSymbol || 'BTC-USD (default)' }
   };
 } 

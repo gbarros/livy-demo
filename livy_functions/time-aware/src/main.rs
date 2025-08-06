@@ -1,33 +1,22 @@
 use chrono::{Utc, Timelike};
-use std::env;
+use clap::Parser;
+
+#[derive(Parser)]
+#[command(name = "time-aware")]
+#[command(about = "Time-Aware Certification Function")]
+struct Args {
+    /// Minutes left until next hour
+    #[arg(long)]
+    minutes: Option<u32>,
+}
 
 fn main() {
     println!("Time-Aware Certification Function");
 
-    // Collect command-line arguments
-    let args: Vec<String> = env::args().collect();
-
-    // Look for the --minutes parameter
-    let mut minutes_value: Option<u32> = None;
-
-    for arg in args.iter().skip(1) {
-        if arg.starts_with("--minutes=") {
-            let value_str = arg.split('=').nth(1).unwrap_or("");
-            match value_str.parse::<u32>() {
-                Ok(num) => {
-                    minutes_value = Some(num);
-                    break;
-                }
-                Err(_) => {
-                    eprintln!("Error: Invalid number format in --minutes parameter");
-                    std::process::exit(1);
-                }
-            }
-        }
-    }
+    let args = Args::parse();
 
     // Check if minutes parameter was provided
-    let user_minutes = match minutes_value {
+    let user_minutes = match args.minutes {
         Some(num) => num,
         None => {
             eprintln!("Error: --minutes parameter is required");

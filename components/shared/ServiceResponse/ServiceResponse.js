@@ -58,7 +58,7 @@ export default function ServiceResponse({
       </div>
 
       {/* Additional extracted data display (service-specific) */}
-      {success && extractedData && renderExtractedData(extractedData)}
+      {extractedData && renderExtractedData(extractedData)}
 
       {/* Raw output toggle */}
       {rawOutput && (
