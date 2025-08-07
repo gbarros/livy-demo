@@ -61,6 +61,17 @@
   color: #991b1b;
 }
 
+.info {
+  background-color: #dbeafe;
+  border: 1px solid #93c5fd;
+  color: #1e40af;
+}
+
+.errorText {
+  color: #991b1b;
+  font-weight: bold;
+}
+
 /* Proof status */
 .proofSection {
   display: flex;

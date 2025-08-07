@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getBlob } from '../../../lib/livy';
 import styles from './ServiceResponse.module.css';
 
 /**
@@ -14,6 +15,11 @@ export default function ServiceResponse({
 }) {
   const [showRawOutput, setShowRawOutput] = useState(false);
   const [showTechDetails, setShowTechDetails] = useState(false);
+  const [showBlobData, setShowBlobData] = useState(false);
+  const [showBlobContent, setShowBlobContent] = useState(false);
+  const [blobContent, setBlobContent] = useState(null);
+  const [blobLoading, setBlobLoading] = useState(false);
+  const [blobError, setBlobError] = useState(null);
 
   if (loading) {
     return (
@@ -38,7 +44,31 @@ export default function ServiceResponse({
     );
   }
 
-  const { success, proofValid, userMessage, rawOutput, technicalDetails, extractedData } = parsedResponse;
+  const { success, proofValid, userMessage, rawOutput, technicalDetails, extractedData, dataAvailability } = parsedResponse;
+
+  const handleFetchBlob = async () => {
+    if (!dataAvailability?.technicalDetails) return;
+
+    // If content is already loaded, just toggle visibility
+    if (blobContent) {
+      setShowBlobContent(!showBlobContent);
+      return;
+    }
+
+    // If content is not loaded, fetch it
+    setShowBlobContent(true);
+    setBlobLoading(true);
+    setBlobError(null);
+    try {
+      const { height, commitment } = dataAvailability.technicalDetails;
+      const result = await getBlob({ celestiaHeight: height, celestiaCommitment: commitment });
+      setBlobContent(result);
+    } catch (err) {
+      setBlobError(err.message || 'Failed to fetch blob content.');
+    } finally {
+      setBlobLoading(false);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -48,6 +78,13 @@ export default function ServiceResponse({
       <div className={`${styles.userMessage} ${success ? styles.success : styles.error}`}>
         <strong>{success ? 'Success:' : 'Error:'}</strong> {userMessage}
       </div>
+
+      {/* Data Availability message */}
+      {dataAvailability && (
+        <div className={`${styles.userMessage} ${styles.info}`}>
+          <strong>Info:</strong> {dataAvailability.userMessage}
+        </div>
+      )}
 
       {/* Proof status badge */}
       <div className={styles.proofSection}>
@@ -97,6 +134,55 @@ export default function ServiceResponse({
               <pre className={styles.code}>
                 {technicalDetails}
               </pre>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Blob metadata toggle */}
+      {dataAvailability && (
+        <div className={styles.section}>
+          <button 
+            onClick={() => setShowBlobData(!showBlobData)}
+            className={styles.toggleButton}
+          >
+            {showBlobData ? 'Hide' : 'Show'} Blob Metadata
+          </button>
+          
+          {showBlobData && (
+            <div className={styles.codeBlock}>
+              <h4 className={styles.sectionTitle}>Celestia Blob Metadata:</h4>
+              <pre className={styles.code}>
+                {JSON.stringify(dataAvailability.technicalDetails, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Blob content toggle */}
+      {dataAvailability && (
+        <div className={styles.section}>
+          <button 
+            onClick={handleFetchBlob}
+            className={styles.toggleButton}
+            disabled={blobLoading}
+          >
+            {blobLoading ? 'Fetching...' : (blobContent ? (showBlobContent ? 'Hide' : 'Show') : 'Fetch')} Blob Content
+          </button>
+          
+          {showBlobContent && (
+            <div className={styles.codeBlock}>
+              {blobLoading && <p>Loading...</p>}
+              {blobError && <p className={styles.errorText}>{blobError}</p>}
+              {blobContent && (
+                <>
+                  <h4 className={styles.sectionTitle}>Celestia Blob Content:</h4>
+                  <pre className={styles.code}>
+                    {JSON.stringify(blobContent, null, 2)}
+                  </pre>
+                </>
+              )}
             </div>
           )}
         </div>

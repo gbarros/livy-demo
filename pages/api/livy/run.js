@@ -1,8 +1,8 @@
 import { createClient, SDKError } from '@livylabs/sdk';
 import debug from 'debug';
 
-const log = debug('livy:api');
-const logError = debug('livy:api:error');
+const log = debug('livy:api:run');
+const logError = debug('livy:api:run:error');
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { serviceId, params = {}, withAttestation = true } = req.body;
+    const { serviceId, params = {}, withAttestation = true, postToDataAvailability = false } = req.body;
 
     if (!serviceId) {
       return res.status(400).json({ error: 'serviceId is required' });
@@ -32,7 +32,8 @@ export default async function handler(req, res) {
     const result = await client.run({
       serviceId,
       params,
-      withAttestation
+      withAttestation,
+      postToDataAvailability
     });
 
     const resultSummary = {
@@ -42,6 +43,7 @@ export default async function handler(req, res) {
       params: result.params,
       withAttestation: result.withAttestation,
       postedToDataAvailability: result.postedToDataAvailability,
+      dataAvailabilityResult: result.dataAvailabilityResult,
       quote: result.quote ? {
         quote: `${result.quote.quote.substring(0, 80)}...`,
         rtmrs: result.quote.rtmrs.map(r => `${r.substring(0, 20)}...`),
@@ -57,7 +59,8 @@ export default async function handler(req, res) {
     res.status(200).json({
       output: result.output,
       proofValid,
-      success: true
+      success: true,
+      dataAvailabilityResult: result.dataAvailabilityResult,
     });
 
   } catch (err) {
@@ -79,3 +82,4 @@ export default async function handler(req, res) {
     });
   }
 }
+

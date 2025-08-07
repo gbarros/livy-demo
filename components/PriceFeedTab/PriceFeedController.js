@@ -19,7 +19,9 @@ export function usePriceFeedController() {
       // TEE Service Call - Core integration logic
       const response = await runService({
         serviceId: process.env.PRICE_SERVICE_ID,
-        params: userSymbol.trim() ? { symbol: userSymbol.trim() } : {}
+        params: userSymbol.trim() ? { symbol: userSymbol.trim() } : {},
+        withAttestation: true,
+        postToDataAvailability: true // post to celestia
       });
       
       // Parse response using standardized parser
